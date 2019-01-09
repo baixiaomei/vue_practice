@@ -3,7 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+var URL = require('./utls/util')
 
+console.log(URL('afdsfas'))
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
