@@ -1,56 +1,77 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+  <div class='box'>
+    <div id="list-demo" class="demo">
+      <button v-on:click="add">Add</button>
+      <button v-on:click="remove">Remove</button>
+      <!--保证key的唯一性-->
+      <div class='box'>
+        <transition-group name="list" tag="div" mode="out-in" >
+          <div v-for="item in items" v-bind:key="item" class="list-item">{{ item }}</div>
+        </transition-group>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      items: [1, 2, 3],
+      nextNum: 10,
+      interval: null
+    }
+  },
+  computed: {
+    randomIndex () {
+      return Math.floor(Math.random() * this.items.length)
     }
   },
   mounted () {
-    console.log(1)
+    this.interval = setInterval(() => {
+      this.loop()
+    }, 3000)
+  },
+  methods: {
+    loop () {
+      this.items.splice(0, 0, this.nextNum++)
+      this.items.length = 4
+    },
+    add () {
+      this.loop()
+    },
+    remove () {
+      this.items.splice(this.randomIndex, 1)
+    }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
+<style scoped >
+.list-item {
+  transition: all 1s;
+  margin-bottom: 20px;
+}
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter{
+  opacity: 0;
+  transform: translateY(-30px);
+}
+.list-leave-to{
+  opacity: 0;
+  transform: translateY(30px);
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+.list{
+  display:block;
+  line-height: 40px;
 }
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
+.box{
+  /* overflow:hidden; */
+  height:140px;
+  margin-top:30px;
 }
 </style>
